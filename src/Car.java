@@ -5,6 +5,10 @@ class Car {
     private WheelDrive wd;
     private CarBody carBody;
 
+    public CarData getCarData() {
+        return carData;
+    }
+
     public Car(CustomerData customer, CarData car, Engine eng, WheelDrive drive, CarBody body) {
         custData = customer;
         carData = car;
@@ -12,8 +16,6 @@ class Car {
         wd = drive;
         carBody = body;
     }
-
-    // ... (остальные методы остаются без изменений)
 
     public String getEngineType() {
         switch (engine) {

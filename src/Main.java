@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.List;
+import java.util.Collections;
 
 class DatabaseResult {
     private int resultCode;
@@ -11,6 +13,29 @@ class DatabaseResult {
 
     public int getResultCode() {
         return resultCode;
+    }
+}
+
+class CarDatabaseManager {
+    private List<CarDatabase> carDatabases;
+
+    public CarDatabaseManager() {
+        carDatabases = new ArrayList<>();
+    }
+
+    // Добавление базы данных автомобилей
+    public void addCarDatabase(CarDatabase carDatabase) {
+        carDatabases.add(carDatabase);
+    }
+
+    // Доступ к базе данных по индексу
+    public CarDatabase getCarDatabase(int index) {
+        return carDatabases.get(index);
+    }
+
+    // Доступ к общему количеству баз данных
+    public int getTotalCarDatabases() {
+        return carDatabases.size();
     }
 }
 
@@ -124,6 +149,20 @@ class CarDatabase {
         }
     }
 
+    public void sortByYearOfRelease() {
+        Collections.sort(cars, (car1, car2) ->
+                car1.getCarData().getYearOfRelease().compareTo(car2.getCarData().getYearOfRelease()));
+    }
+
+    public Car searchCarByBrand(String brand) {
+        for (Car car : cars) {
+            if (car.getCarData().getCarBrand().equalsIgnoreCase(brand)) {
+                return car;
+            }
+        }
+        return null; // Автомобиль не найден
+    }
+
     public static int getTotalCarDatabases() {
         return totalCarDatabases;
     }
@@ -143,6 +182,8 @@ class CarDatabase {
             System.out.println(" 3. Вывести все существующие записи");
             System.out.println(" 4. Вывести конкретную запись");
             System.out.println(" 5. Удалить конкретную запись");
+            System.out.println(" 6. Отсортировать по году выпуска");
+            System.out.println(" 7. Поиск по марке");
             System.out.println(" 0. Выйти");
 
             if (scanner.hasNextInt()) {
@@ -169,6 +210,21 @@ class CarDatabase {
                         break;
                     case 5:
                         System.out.println("Удаление находится в разработке!\n");
+                        break;
+                    case 6:
+                        carDb.sortByYearOfRelease();
+                        System.out.println("Список автомобилей отсортирован по году выпуска.");
+                        break;
+                    case 7:
+                        System.out.print("Введите марку автомобиля для поиска: ");
+                        String brandToSearch = scanner.next();
+                        Car foundCar = carDb.searchCarByBrand(brandToSearch);
+                        if (foundCar != null) {
+                            System.out.println("Найден автомобиль:");
+                            foundCar.displayCarInfo();
+                        } else {
+                            System.out.println("Автомобиль с маркой " + brandToSearch + " не найден.");
+                        }
                         break;
                     case 0:
                         System.out.println("Выход.\n");
